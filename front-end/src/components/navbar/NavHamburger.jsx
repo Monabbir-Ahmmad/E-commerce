@@ -29,7 +29,7 @@ const Container = styled.div`
       translateY(${({ isMenuOpen }) => (isMenuOpen ? -10 : 0)}px);
   }
 
-  @media (max-width: 770px) {
+  @media (max-width: 800px) {
     display: flex;
   }
 `;

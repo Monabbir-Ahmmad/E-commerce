@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Card from "./Card";
 import RatingStars from "./RatingStars";
 
 const Container = styled(Card)`
-  flex: 1 10%;
+  flex: 1 20%;
   min-width: 200px;
   display: flex;
   align-items: center;
@@ -29,29 +30,40 @@ const InfoContainer = styled.div`
   color: #696969;
 `;
 
-const Title = styled.h3``;
+const Title = styled.h3`
+  :hover {
+    text-decoration: underline;
+  }
+`;
 
 const Rating = styled.p`
   font-size: 18px;
   font-weight: 500;
 `;
+
 const Price = styled.h2``;
 
 function ProductItem({ item }) {
+  const itemLink = `/product/id=${item.id}`;
+
   return (
-    <Container>
+    <Container hover="hover">
       <ImageContainer>
-        <Image src={item.image} />
+        <Link to={itemLink}>
+          <Image src={item.image} />
+        </Link>
       </ImageContainer>
       <InfoContainer>
-        <Title>
-          {item.brand} - {item.name}
-        </Title>
-        <RatingStars maxValue={5} value={item.rating} />
-        <Rating>
-          {item.rating} from {item.numReviews} reviews
-        </Rating>
-        <Price>$ {item.price}</Price>
+        <Link to={itemLink}>
+          <Title>
+            {item.brand} - {item.name}
+          </Title>
+          <RatingStars maxValue={5} currentValue={item.rating} />
+          <Rating>
+            {item.rating} from {item.numReviews} reviews
+          </Rating>
+          <Price>$ {item.price}</Price>
+        </Link>
       </InfoContainer>
     </Container>
   );

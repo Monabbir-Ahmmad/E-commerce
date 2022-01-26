@@ -10,3 +10,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+a {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}

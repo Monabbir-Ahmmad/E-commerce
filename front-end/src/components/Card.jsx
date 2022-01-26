@@ -6,8 +6,10 @@ const Card = styled.div`
   transition: 0.4s;
   overflow: hidden;
 
+  //To give hover effect pass a non-empty string to hover
   :hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 ${({ hover }) => (hover ? "8px 16px" : "4px 8px")} 0
+      rgba(0, 0, 0, 0.2);
   }
 `;
 
