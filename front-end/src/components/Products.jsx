@@ -3,19 +3,18 @@ import styled from "styled-components";
 import ProductItem from "./ProductItem";
 
 const Container = styled.div`
-  width: 70%;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20px;
-  gap: 20px;
+  width: 100%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
 `;
 
 function Products({ productDataSet }) {
   return (
     <Container>
       {productDataSet.map((item) => (
-        <ProductItem key={item.id} item={item} />
+        <ProductItem key={item._id} item={item} />
       ))}
     </Container>
   );

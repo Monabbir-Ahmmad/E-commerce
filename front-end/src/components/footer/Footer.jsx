@@ -14,6 +14,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 20px;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 770px) {
     flex-direction: column;
@@ -27,7 +28,14 @@ const Left = styled.div`
   padding: 20px;
 `;
 
-const Logo = styled.h1``;
+const Logo = styled.div`
+  font-weight: bold;
+  font-size: 2rem;
+  span {
+    font-size: 3rem;
+    color: #0075c4;
+  }
+`;
 
 const Description = styled.p`
   margin: 20px 0px;
@@ -87,7 +95,9 @@ function Footer() {
   return (
     <Container>
       <Left>
-        <Logo>ORIGIN</Logo>
+        <Logo>
+          <span>O</span>rigin
+        </Logo>
         <Description>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio,
           quibusdam. Ducimus illo reiciendis sequi ipsum a atque dolorum eveniet

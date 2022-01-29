@@ -5,12 +5,14 @@ import Card from "./Card";
 import RatingStars from "./RatingStars";
 
 const Container = styled(Card)`
-  flex: 1 20%;
-  min-width: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
+  @media (max-width: 800px) {
+    flex-grow: 1;
+  }
 `;
 
 const ImageContainer = styled.div`
@@ -44,7 +46,7 @@ const Rating = styled.p`
 const Price = styled.h2``;
 
 function ProductItem({ item }) {
-  const itemLink = `/product/id=${item.id}`;
+  const itemLink = `/product/id=${item._id}`;
 
   return (
     <Container hover="hover">

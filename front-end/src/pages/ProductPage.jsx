@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { singleProductDetails } from "../actions/productActions";
 import Card from "../components/Card";
+import Loader from "../components/utility/Loader";
+import Message from "../components/utility/Message";
 import RatingStars from "../components/RatingStars";
-import axios from "axios";
 
 const Container = styled.div`
   max-width: 80%;
@@ -66,11 +69,6 @@ const Description = styled.p`
   font-size: 16px;
 `;
 
-const Stock = styled.label`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
 const CartContainer = styled(Card)`
   flex: 1;
   min-width: 200px;
@@ -80,6 +78,17 @@ const CartContainer = styled(Card)`
   flex-direction: column;
   padding: 20px;
   gap: 20px;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const QuantitySelect = styled.select`
+  padding: 8px;
+  background-color: #f1f1f1;
+  margin: 0 15px;
+  font-size: 20px;
+  border: none;
+  border-radius: 4px;
 `;
 
 const Button = styled.button`
@@ -92,9 +101,7 @@ const Button = styled.button`
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
-  font-size: 16px;
   border-radius: 5px;
-  display: ${({ count }) => (count > 0 ? "block" : "none")};
 
   :hover {
     background-color: #004c94;
@@ -102,56 +109,98 @@ const Button = styled.button`
 `;
 
 function ProductPage() {
+  const navigate = useNavigate();
   const params = useParams();
-  const [product, setProduct] = useState({});
+  const dispatch = useDispatch();
+
+  const [quantity, setQuantity] = useState(1);
+
+  const { loading, error, product } = useSelector(
+    (state) => state.productDetails
+  );
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/products/${params.productId}`
-        );
-        setProduct(res.data);
-      } catch (error) {
-        console.log(`Error: ${error.message}`);
-      }
-    };
+    dispatch(singleProductDetails(params.productId));
+  }, [dispatch, params.productId]);
 
-    fetchProduct();
-  }, [params.productId]);
+  const addToCartHandler = () => {
+    navigate(`/cart/${params.productId}?quantity=${quantity}`);
+  };
 
   return (
-    <Container>
-      <ImageContainer>
-        <Image src={product.image} />
-      </ImageContainer>
-      <InfoContainer>
-        <Title>{product.name}</Title>
-        <Divider />
-        <RatingContainer>
-          <RatingStars maxValue={5} currentValue={product.rating} />{" "}
-          {product.rating} ({product.numReviews} reviews)
-        </RatingContainer>
-        <Divider />
-        <Price>Price: ${product.price}</Price>
-        <Divider />
-        <Description>{product.description}</Description>
-      </InfoContainer>
-      <CartContainer>
-        <Price>Price: ${product.price}</Price>
-        <Divider />
-        <Stock>
-          Stock:
-          <span
-            style={{ color: product.countInStock > 0 ? "#009900" : "#990000" }}
-          >
-            {product.countInStock > 0 ? " In stock" : " Out of stock"}
-          </span>
-        </Stock>
-        <Divider />
-        <Button count={product.countInStock}>Add to cart</Button>
-      </CartContainer>
-    </Container>
+    <>
+      {loading ? (
+        <Loader
+          bgColor={"#0000000"}
+          textColor={"#000"}
+          spinnerColor={"#0045b4"}
+        >
+          Loading
+        </Loader>
+      ) : error ? (
+        <Message>{error}</Message>
+      ) : (
+        <Container>
+          <ImageContainer>
+            <Image src={product.image} />
+          </ImageContainer>
+
+          <InfoContainer>
+            <Title>{product.name}</Title>
+
+            <Divider />
+
+            <RatingContainer>
+              <RatingStars maxValue={5} currentValue={product.rating} />{" "}
+              {product.rating} ({product.numReviews} reviews)
+            </RatingContainer>
+
+            <Divider />
+
+            <Price>Price: ${product.price}</Price>
+
+            <Divider />
+
+            <Description>{product.description}</Description>
+          </InfoContainer>
+
+          <CartContainer>
+            <label>Price: ${product.price}</label>
+
+            <Divider />
+
+            <label>
+              Stock:
+              <span
+                style={{
+                  color: product.countInStock > 0 ? "#009900" : "#990000",
+                }}
+              >
+                {product.countInStock > 0 ? " In stock" : " Out of stock"}
+              </span>
+            </label>
+
+            <Divider />
+
+            {product.countInStock > 0 && (
+              <label>
+                Quantity:
+                <QuantitySelect onChange={(e) => setQuantity(e.target.value)}>
+                  {[...Array(product.countInStock).keys()].map((x) => (
+                    <option key={x + 1} value={x + 1}>
+                      {x + 1}
+                    </option>
+                  ))}
+                </QuantitySelect>
+              </label>
+            )}
+            {product.countInStock > 0 && (
+              <Button onClick={addToCartHandler}>Add to cart</Button>
+            )}
+          </CartContainer>
+        </Container>
+      )}
+    </>
   );
 }
 

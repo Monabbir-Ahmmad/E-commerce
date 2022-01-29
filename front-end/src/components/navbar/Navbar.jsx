@@ -10,8 +10,11 @@ const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  padding: 10px 20px;
+  padding: 0 1rem;
+  background: #fff;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
 `;
+
 const StyledLink = styled(Link)`
   cursor: pointer;
   text-decoration: none;
@@ -20,9 +23,9 @@ const StyledLink = styled(Link)`
 
 const Logo = styled.div`
   font-weight: bold;
-  font-size: 30px;
+  font-size: 2rem;
   span {
-    font-size: 50px;
+    font-size: 3rem;
     color: #0075c4;
   }
 `;
@@ -30,10 +33,10 @@ const Logo = styled.div`
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding-left: 1rem;
   border: 1px solid lightgray;
   border-radius: 100px;
-  margin: 0px 20px;
+  margin: 0 2rem;
   flex: 1;
   max-width: 30vw;
 `;
@@ -41,18 +44,19 @@ const SearchContainer = styled.div`
 const Input = styled.input`
   border: none;
   outline: none;
-  font-size: 18px;
+  font-size: 1rem;
   width: 100%;
-  height: 40px;
+  height: 2rem;
   background-color: transparent;
 `;
 
 const SearchIcon = styled(MdSearch)`
   color: gray;
   font-size: 25px;
-  padding: 5px;
+  padding: 4px;
+  margin: 4px;
   border-radius: 50px;
-  transition: all 0.5s ease;
+  transition: 0.5s;
 
   :hover {
     background-color: #0075c4;
@@ -62,7 +66,7 @@ const SearchIcon = styled(MdSearch)`
 
 const Menu = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   position: relative;
 
@@ -70,12 +74,12 @@ const Menu = styled.div`
     overflow: hidden;
     flex-direction: column;
     width: 100%;
-    max-height: ${({ isMenuOpen }) => (isMenuOpen ? 500 : 0)}px;
+    max-height: ${({ isMenuOpen }) => (isMenuOpen ? 1000 : 0)}px;
     transition: max-height 1s ease;
   }
 `;
 
-function Navbar({navItems}) {
+function Navbar({ navItems }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (

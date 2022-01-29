@@ -1,31 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Products from "../components/Products";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../actions/productActions";
+import Message from "../components/utility/Message";
+import Loader from "../components/utility/Loader";
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
+  padding: 20px 10%;
 `;
 
 function HomePage() {
-  const [productDataSet, setProductDataSet] = useState([]);
+  const dispatch = useDispatch();
+
+  const { loading, error, products } = useSelector(
+    (state) => state.productList
+  );
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/products");
-        setProductDataSet(res.data);
-      } catch (error) {
-        console.log(`Error: ${error.message}`);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <Container>
-      <Products productDataSet={productDataSet} />
+      <h1>Products</h1>
+      {loading ? (
+        <Loader
+          bgColor={"#0000000"}
+          textColor={"#000"}
+          spinnerColor={"#0045b4"}
+        >
+          Loading
+        </Loader>
+      ) : error ? (
+        <Message>{error}</Message>
+      ) : (
+        <Products productDataSet={products} />
+      )}
     </Container>
   );
 }

@@ -1,8 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 import styled from "styled-components";
 import Card from "../components/Card";
+import { API_HOST } from "../constants/apiLinks";
 
-const Container = styled.div`
+const FormContainer = styled.form`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,40 +67,82 @@ const Button = styled.button`
 
 function RegistrationPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+
+    if (selectedImage) {
+      console.log(selectedImage);
+      const formData = new FormData();
+
+      for (let i = 0; i < selectedImage.length; i++) {
+        formData.append("image", selectedImage[i]);
+      }
+
+      const res = await axios.post(`${API_HOST}/api/upload`, formData, {
+        headers: {
+          "Content-type": "multipart/form-data",
+        },
+      });
+
+      console.log(res.data);
+    }
+  };
+
+  const onFileSelect = (e) => {
+    setSelectedImage(e.target.files);
+  };
 
   return (
-    <Container>
+    <FormContainer onSubmit={onFormSubmit}>
       <CardContainer>
         <Title>SIGN UP</Title>
+
         <InputContainer>
           <InputLabel>Name</InputLabel>
           <Input placeholder="Enter your name" />
         </InputContainer>
+
         <InputContainer>
           <InputLabel>Email</InputLabel>
           <Input placeholder="Enter your email address" type="email" />
         </InputContainer>
+
         <InputContainer>
           <InputLabel>Phone</InputLabel>
           <Input placeholder="Enter your phone number" type="tel" />
         </InputContainer>
+
         <InputContainer>
           <InputLabel>Password</InputLabel>
           <Input
             placeholder="Enter your name"
             type={showPassword ? "text" : "password"}
           />
-          <div>
+          <label>
             Show password{" "}
             <input
               type="checkbox"
               onClick={() => setShowPassword(!showPassword)}
             />
-          </div>
+          </label>
         </InputContainer>
+
+        <InputContainer>
+          <InputLabel>Upload file</InputLabel>
+          <Input
+            type={"file"}
+            name="myImage"
+            accept="image/*"
+            onChange={onFileSelect}
+            multiple
+          />
+        </InputContainer>
+
         <Button>Submit</Button>
       </CardContainer>
-    </Container>
+    </FormContainer>
   );
 }
 

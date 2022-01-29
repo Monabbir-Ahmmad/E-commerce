@@ -5,7 +5,7 @@ const StyledNavLink = styled(NavLink)`
   font-size: 18px;
   color: ${({ color }) => color || "#000"};
   text-transform: uppercase;
-  margin: 5px 5px;
+  margin: 0 5px;
   padding: 10px 10px;
   white-space: nowrap;
   position: relative;
@@ -17,6 +17,7 @@ const StyledNavLink = styled(NavLink)`
     height: 2px;
     bottom: 0;
     left: 0;
+    right: 0;
     background-color: ${({ color }) => color || "#000"};
     transition: all 0.5s ease;
     transform: scaleX(0);

@@ -69,7 +69,7 @@ export const productDataSet = [
     brand: "Geo",
     category: "info-mediaries",
     price: 631.27,
-    countInStock: 613,
+    countInStock: 0,
     rating: 1.5,
     numReviews: 46,
   },
