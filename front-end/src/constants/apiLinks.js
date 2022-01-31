@@ -7,4 +7,4 @@ export const GET_ALL_PRODUCTS = `${API_HOST}/api/products`;
 
 //@desc Get specific product by id
 //@format API_HOST/api/product/:id
-export const GET_SINGLE_PRODUCT = `${API_HOST}/api/product`;
+export const GET_SINGLE_PRODUCT = `${API_HOST}/api/products`;

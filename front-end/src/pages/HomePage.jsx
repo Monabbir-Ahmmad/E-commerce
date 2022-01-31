@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import { useEffect } from "react";
+import styled from "@emotion/styled";
 import Products from "../components/Products";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
-import Message from "../components/utility/Message";
 import Loader from "../components/utility/Loader";
+import { Alert, AlertTitle, Typography } from "@mui/material";
 
 const Container = styled.div`
   display: flex;
@@ -25,7 +25,9 @@ function HomePage() {
 
   return (
     <Container>
-      <h1>Products</h1>
+      <Typography variant="h4" mb={2}>
+        Products
+      </Typography>
       {loading ? (
         <Loader
           bgColor={"#0000000"}
@@ -35,7 +37,10 @@ function HomePage() {
           Loading
         </Loader>
       ) : error ? (
-        <Message>{error}</Message>
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
       ) : (
         <Products productDataSet={products} />
       )}

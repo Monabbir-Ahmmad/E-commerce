@@ -1,73 +1,51 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import Card from "./Card";
-import RatingStars from "./RatingStars";
-
-const Container = styled(Card)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-  @media (max-width: 800px) {
-    flex-grow: 1;
-  }
-`;
-
-const ImageContainer = styled.div`
-  flex: 1;
-  background-color: #dadada;
-`;
-
-const Image = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const InfoContainer = styled.div`
-  flex: 1;
-  width: 80%;
-  color: #696969;
-`;
-
-const Title = styled.h3`
-  :hover {
-    text-decoration: underline;
-  }
-`;
-
-const Rating = styled.p`
-  font-size: 18px;
-  font-weight: 500;
-`;
-
-const Price = styled.h2``;
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Rating,
+  Stack,
+  Typography,
+} from "@mui/material";
 
 function ProductItem({ item }) {
+  const navigate = useNavigate();
+
   const itemLink = `/product/id=${item._id}`;
 
+  const onItemClick = () => navigate(itemLink);
+
   return (
-    <Container hover="hover">
-      <ImageContainer>
-        <Link to={itemLink}>
-          <Image src={item.image} />
-        </Link>
-      </ImageContainer>
-      <InfoContainer>
-        <Link to={itemLink}>
-          <Title>
-            {item.brand} - {item.name}
-          </Title>
-          <RatingStars maxValue={5} currentValue={item.rating} />
-          <Rating>
-            {item.rating} from {item.numReviews} reviews
-          </Rating>
-          <Price>$ {item.price}</Price>
-        </Link>
-      </InfoContainer>
-    </Container>
+    <Card onClick={onItemClick}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height={250}
+          image={item.image}
+          alt={item.name}
+        />
+      </CardActionArea>
+
+      <CardContent>
+        <Typography variant="h6" mb={2}>
+          {item.brand} — {item.name}
+        </Typography>
+
+        <Stack spacing={1} direction="row" mb={2}>
+          <Rating defaultValue={item.rating} precision={0.1} readOnly />
+          <Typography variant="body1">{item.rating}</Typography>
+        </Stack>
+
+        <Typography variant="h5">${item.price}</Typography>
+      </CardContent>
+      <CardActions>
+        <Button onClick={onItemClick}>Shop now</Button>
+      </CardActions>
+    </Card>
   );
 }
 

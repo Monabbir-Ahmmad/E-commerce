@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { slideDataSet } from "../data";
 import SliderItem from "./SliderItem";
 

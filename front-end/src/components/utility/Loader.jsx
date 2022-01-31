@@ -1,6 +1,7 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "@emotion/styled";
 import { ImSpinner2 } from "react-icons/im";
+import { keyframes } from "@emotion/react";
 
 const Container = styled.div`
   width: 100vw;

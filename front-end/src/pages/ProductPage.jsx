@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { singleProductDetails } from "../actions/productActions";
-import Card from "../components/Card";
 import Loader from "../components/utility/Loader";
-import Message from "../components/utility/Message";
-import RatingStars from "../components/RatingStars";
+import {
+  Alert,
+  AlertTitle,
+  Button,
+  Divider,
+  MenuItem,
+  Paper,
+  Rating,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { addToCart } from "../actions/cartActions";
 
 const Container = styled.div`
   max-width: 80%;
@@ -18,11 +28,6 @@ const Container = styled.div`
   gap: 40px;
 `;
 
-const Divider = styled.span`
-  background-color: darkgray;
-  width: 100%;
-  height: 1px;
-`;
 const ImageContainer = styled.div`
   flex: 1;
   min-width: 300px;
@@ -38,74 +43,16 @@ const Image = styled.img`
   object-fit: cover;
 `;
 
-const InfoContainer = styled.div`
+const InfoContainer = styled(Stack)`
   flex: 1;
   min-width: 200px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
-  color: #555555;
-  gap: 20px;
+  color: #353535;
 `;
 
-const Title = styled.h1``;
-
-const RatingContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: row;
-  width: 100%;
-  gap: 20px;
-`;
-
-const Price = styled.label`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-const Description = styled.p`
-  font-size: 16px;
-`;
-
-const CartContainer = styled(Card)`
+const CartContainer = styled(Paper)`
   flex: 1;
   min-width: 200px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  flex-direction: column;
   padding: 20px;
-  gap: 20px;
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-const QuantitySelect = styled.select`
-  padding: 8px;
-  background-color: #f1f1f1;
-  margin: 0 15px;
-  font-size: 20px;
-  border: none;
-  border-radius: 4px;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  flex: 1;
-  background-color: #026bce;
-  border: none;
-  width: 100%;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  border-radius: 5px;
-
-  :hover {
-    background-color: #004c94;
-  }
 `;
 
 function ProductPage() {
@@ -124,7 +71,8 @@ function ProductPage() {
   }, [dispatch, params.productId]);
 
   const addToCartHandler = () => {
-    navigate(`/cart/${params.productId}?quantity=${quantity}`);
+    dispatch(addToCart(params.productId, quantity));
+    navigate(`/cart`);
   };
 
   return (
@@ -138,65 +86,83 @@ function ProductPage() {
           Loading
         </Loader>
       ) : error ? (
-        <Message>{error}</Message>
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
       ) : (
         <Container>
           <ImageContainer>
             <Image src={product.image} />
           </ImageContainer>
 
-          <InfoContainer>
-            <Title>{product.name}</Title>
+          <InfoContainer spacing={2} divider={<Divider />}>
+            <Typography variant="h4" fontWeight={600}>
+              {product.name}
+            </Typography>
 
-            <Divider />
+            <Stack direction="row" spacing={2}>
+              <Rating
+                defaultValue={product.rating}
+                precision={0.1}
+                readOnly
+                size="large"
+              />
+              <Typography variant="h6">
+                {product.rating} ({product.numReviews} reviews)
+              </Typography>
+            </Stack>
 
-            <RatingContainer>
-              <RatingStars maxValue={5} currentValue={product.rating} />{" "}
-              {product.rating} ({product.numReviews} reviews)
-            </RatingContainer>
+            <Typography variant="h5">Price: ${product.price}</Typography>
 
-            <Divider />
-
-            <Price>Price: ${product.price}</Price>
-
-            <Divider />
-
-            <Description>{product.description}</Description>
+            <Typography variant="body1">{product.description}</Typography>
           </InfoContainer>
 
           <CartContainer>
-            <label>Price: ${product.price}</label>
+            <Stack spacing={2} divider={<Divider />}>
+              <Typography variant="h6" fontWeight={600}>
+                Price: ${product.price}
+              </Typography>
 
-            <Divider />
+              <Typography variant="h6" fontWeight={600}>
+                Stock:{" "}
+                <span
+                  variant="h6"
+                  style={{
+                    color: product.countInStock > 0 ? "#009900" : "#990000",
+                  }}
+                >
+                  {product.countInStock > 0 ? "In stock" : "Out of stock"}
+                </span>
+              </Typography>
 
-            <label>
-              Stock:
-              <span
-                style={{
-                  color: product.countInStock > 0 ? "#009900" : "#990000",
-                }}
-              >
-                {product.countInStock > 0 ? " In stock" : " Out of stock"}
-              </span>
-            </label>
-
-            <Divider />
-
-            {product.countInStock > 0 && (
-              <label>
-                Quantity:
-                <QuantitySelect onChange={(e) => setQuantity(e.target.value)}>
-                  {[...Array(product.countInStock).keys()].map((x) => (
-                    <option key={x + 1} value={x + 1}>
-                      {x + 1}
-                    </option>
-                  ))}
-                </QuantitySelect>
-              </label>
-            )}
-            {product.countInStock > 0 && (
-              <Button onClick={addToCartHandler}>Add to cart</Button>
-            )}
+              {product.countInStock > 0 && (
+                <Typography variant="h6" fontWeight={600}>
+                  Quantity:
+                  <Select
+                    size="small"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    sx={{ m: 1 }}
+                  >
+                    {Array.from(Array(product.countInStock), (_, index) => (
+                      <MenuItem key={index} value={index + 1}>
+                        {index + 1}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Typography>
+              )}
+              {product.countInStock > 0 && (
+                <Button
+                  fullWidth
+                  variant="contained"
+                  onClick={addToCartHandler}
+                >
+                  Add to cart
+                </Button>
+              )}
+            </Stack>
           </CartContainer>
         </Container>
       )}

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
-import styled from "styled-components";
-import Card from "../components/Card";
+import styled from "@emotion/styled";
 import { API_HOST } from "../constants/apiLinks";
+import { Button, Paper } from "@mui/material";
 
 const FormContainer = styled.form`
   display: flex;
@@ -10,7 +10,7 @@ const FormContainer = styled.form`
   justify-content: center;
 `;
 
-const CardContainer = styled(Card)`
+const CardContainer = styled(Paper)`
   flex: 1;
   max-width: 500px;
   margin: 20px;
@@ -45,24 +45,6 @@ const Input = styled.input`
   border: 1px solid lightgray;
   padding: 15px 20px;
   border-radius: 5px;
-`;
-
-const Button = styled.button`
-  cursor: pointer;
-  flex: 1;
-  background-color: #026bce;
-  border: none;
-  width: 100%;
-  color: white;
-  padding: 15px 30px;
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  border-radius: 5px;
-
-  :hover {
-    background-color: #004c94;
-  }
 `;
 
 function RegistrationPage() {
@@ -140,7 +122,9 @@ function RegistrationPage() {
           />
         </InputContainer>
 
-        <Button>Submit</Button>
+        <Button variant="contained" fullWidth>
+          Submit
+        </Button>
       </CardContainer>
     </FormContainer>
   );

@@ -4,7 +4,6 @@ import SignUpPage from "./pages/SignUpPage";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
-import Footer from "./components/footer/Footer";
 
 function App() {
   const navItems = ["Home", "Cart", "About us", "Sign up", "Sign in"];
@@ -21,7 +20,6 @@ function App() {
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/product/id=:productId" element={<ProductPage />} />
       </Routes>
-      <Footer />
     </>
   );
 }

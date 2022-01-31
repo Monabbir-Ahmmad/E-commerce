@@ -1,6 +1,6 @@
 import axios from "axios";
 import { GET_SINGLE_PRODUCT } from "../constants/apiLinks";
-import { CART_ADD_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 
 export const addToCart = (id, quantity) => async (dispatch, getState) => {
   try {
@@ -9,8 +9,9 @@ export const addToCart = (id, quantity) => async (dispatch, getState) => {
     dispatch({
       type: CART_ADD_ITEM,
       payload: {
-        productId: res.data._id,
+        id: res.data._id,
         name: res.data.name,
+        brand: res.data.brand,
         image: res.data.image,
         price: res.data.price,
         countInStock: res.data.countInStock,
@@ -18,11 +19,23 @@ export const addToCart = (id, quantity) => async (dispatch, getState) => {
       },
     });
 
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(getState().cart.cartItems)
-    );
+    saveToLocalStorage(getState().cart.cartItems);
   } catch (error) {
     console.error(error);
   }
 };
+
+export const removeFromCart = (id) => async (dispatch, getState) => {
+  dispatch({
+    type: CART_REMOVE_ITEM,
+    payload: {
+      id: id,
+    },
+  });
+
+  saveToLocalStorage(getState().cart.cartItems);
+};
+
+function saveToLocalStorage(cartItems) {
+  localStorage.setItem("cartItems", JSON.stringify(cartItems));
+}

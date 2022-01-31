@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { MdSearch } from "react-icons/md";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import NavHamburger from "./NavHamburger";
 import NavItem from "./NavItem";
 
@@ -68,7 +68,6 @@ const Menu = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 
   @media (max-width: 800px) {
     overflow: hidden;
