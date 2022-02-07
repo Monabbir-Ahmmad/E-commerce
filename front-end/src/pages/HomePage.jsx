@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import styled from "@emotion/styled";
-import Products from "../components/Products";
+import Products from "../components/product/Products";
 import { useDispatch, useSelector } from "react-redux";
 import { listProducts } from "../actions/productActions";
-import Loader from "../components/utility/Loader";
-import { Alert, AlertTitle, Typography } from "@mui/material";
+import { Alert, AlertTitle, LinearProgress, Typography } from "@mui/material";
 
 const Container = styled.div`
   display: flex;
@@ -29,13 +28,7 @@ function HomePage() {
         Products
       </Typography>
       {loading ? (
-        <Loader
-          bgColor={"#0000000"}
-          textColor={"#000"}
-          spinnerColor={"#0045b4"}
-        >
-          Loading
-        </Loader>
+        <LinearProgress />
       ) : error ? (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>

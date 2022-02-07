@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "@emotion/styled";
 import { singleProductDetails } from "../actions/productActions";
-import Loader from "../components/utility/Loader";
 import {
   Alert,
   AlertTitle,
   Button,
   Divider,
+  LinearProgress,
   MenuItem,
   Paper,
   Rating,
@@ -57,7 +57,9 @@ const CartContainer = styled(Paper)`
 
 function ProductPage() {
   const navigate = useNavigate();
+
   const params = useParams();
+
   const dispatch = useDispatch();
 
   const [quantity, setQuantity] = useState(1);
@@ -78,13 +80,7 @@ function ProductPage() {
   return (
     <>
       {loading ? (
-        <Loader
-          bgColor={"#0000000"}
-          textColor={"#000"}
-          spinnerColor={"#0045b4"}
-        >
-          Loading
-        </Loader>
+        <LinearProgress />
       ) : error ? (
         <Alert severity="error">
           <AlertTitle>Error</AlertTitle>

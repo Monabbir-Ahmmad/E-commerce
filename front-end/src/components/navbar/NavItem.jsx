@@ -2,11 +2,10 @@ import { NavLink } from "react-router-dom";
 import styled from "@emotion/styled";
 
 const StyledNavLink = styled(NavLink)`
-  font-size: 18px;
-  color: ${({ color }) => color || "#000"};
+  font-size: 1rem;
+  color: black;
   text-transform: uppercase;
-  margin: 0 5px;
-  padding: 10px 10px;
+  padding: 0.5rem;
   white-space: nowrap;
   position: relative;
 
@@ -18,7 +17,7 @@ const StyledNavLink = styled(NavLink)`
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: ${({ color }) => color || "#000"};
+    background-color: black;
     transition: all 0.5s ease;
     transform: scaleX(0);
   }
@@ -34,15 +33,4 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-function NavItem({ color, text }) {
-  return (
-    <StyledNavLink
-      to={`/${text.replace(" ", "-").toLowerCase()}`}
-      color={color}
-    >
-      {text}
-    </StyledNavLink>
-  );
-}
-
-export default NavItem;
+export { StyledNavLink };

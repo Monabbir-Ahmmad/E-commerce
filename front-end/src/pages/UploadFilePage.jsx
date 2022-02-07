@@ -47,7 +47,7 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-function RegistrationPage() {
+function UploadFilePage() {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -130,4 +130,4 @@ function RegistrationPage() {
   );
 }
 
-export default RegistrationPage;
+export default UploadFilePage;

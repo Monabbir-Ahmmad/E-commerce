@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { MdSearch } from "react-icons/md";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import NavHamburger from "./NavHamburger";
-import NavItem from "./NavItem";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, IconButton } from "@mui/material";
+import { logout } from "../../actions/userActions";
+import { StyledNavLink } from "./NavItem";
+import { Search } from "@mui/icons-material";
 
 const Container = styled.div`
   display: flex;
@@ -12,7 +15,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   padding: 0 1rem;
   background: #fff;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
 `;
 
 const StyledLink = styled(Link)`
@@ -33,12 +36,15 @@ const Logo = styled.div`
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 1rem;
   border: 1px solid lightgray;
   border-radius: 100px;
   margin: 0 2rem;
   flex: 1;
   max-width: 30vw;
+
+  @media (max-width: 800px) {
+    max-width: 100vw;
+  }
 `;
 
 const Input = styled.input`
@@ -47,39 +53,34 @@ const Input = styled.input`
   font-size: 1rem;
   width: 100%;
   height: 2rem;
+  padding-left: 1rem;
   background-color: transparent;
-`;
-
-const SearchIcon = styled(MdSearch)`
-  color: gray;
-  font-size: 25px;
-  padding: 4px;
-  margin: 4px;
-  border-radius: 50px;
-  transition: 0.5s;
-
-  :hover {
-    background-color: #0075c4;
-    color: white;
-  }
 `;
 
 const Menu = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 
   @media (max-width: 800px) {
     overflow: hidden;
     flex-direction: column;
     width: 100%;
+    margin-bottom: 5px;
     max-height: ${({ isMenuOpen }) => (isMenuOpen ? 1000 : 0)}px;
     transition: max-height 1s ease;
   }
 `;
 
-function Navbar({ navItems }) {
+function Navbar() {
+  const dispatch = useDispatch();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  const isLoggedIn = userInfo && Object.keys(userInfo).length > 0;
 
   return (
     <Container>
@@ -91,8 +92,11 @@ function Navbar({ navItems }) {
 
       <SearchContainer>
         <Input placeholder="Search" />
-        <SearchIcon />
+        <IconButton>
+          <Search />
+        </IconButton>
       </SearchContainer>
+
       <NavHamburger
         color={"#000"}
         isMenuOpen={isMenuOpen}
@@ -101,9 +105,24 @@ function Navbar({ navItems }) {
         }}
       />
       <Menu isMenuOpen={isMenuOpen}>
-        {navItems.map((item, index) => (
-          <NavItem key={index} color={"#000"} text={item} />
-        ))}
+        <StyledNavLink to="/home">Home</StyledNavLink>
+        <StyledNavLink to="/cart">Cart</StyledNavLink>
+        {!isLoggedIn && <StyledNavLink to="/sign-up">Sign up</StyledNavLink>}
+        {isLoggedIn ? (
+          <StyledNavLink to="/profile">{userInfo.name}</StyledNavLink>
+        ) : (
+          <StyledNavLink to="/sign-in">Sign in</StyledNavLink>
+        )}
+
+        {isLoggedIn && (
+          <Button
+            variant="outlined"
+            sx={{ fontSize: "1rem" }}
+            onClick={() => dispatch(logout())}
+          >
+            Logout
+          </Button>
+        )}
       </Menu>
     </Container>
   );

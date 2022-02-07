@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 
-const protectProfile = asyncHandler(async (req, res, next) => {
+const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
@@ -29,4 +29,4 @@ const protectProfile = asyncHandler(async (req, res, next) => {
     throw new Error("Not authorized. No token found");
   }
 });
-export { protectProfile };
+export { protect };

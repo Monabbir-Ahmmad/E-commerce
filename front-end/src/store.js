@@ -6,18 +6,37 @@ import {
   productDetailsReducer,
   productListReducer,
 } from "./reducers/productReducers";
+import { socketConnectionReducer } from "./reducers/socketReducer";
+import {
+  userDetailsReducer,
+  userLoginReducer,
+  userProfileUpdateReducer,
+  userRegisterReducer,
+} from "./reducers/userReducer";
 
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
+  userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
+  userDetails: userDetailsReducer,
+  userProfileUpdate: userProfileUpdateReducer,
+  socketConnection: socketConnectionReducer,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
-const initialState = { cart: { cartItems: cartItemsFromStorage } };
+const userInfoFromStorage = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : {};
+
+const initialState = {
+  cart: { cartItems: cartItemsFromStorage },
+  userLogin: { userInfo: userInfoFromStorage },
+};
 
 const middleware = [thunk];
 

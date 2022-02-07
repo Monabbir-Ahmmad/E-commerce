@@ -15,7 +15,7 @@ import {
 function ProductItem({ item }) {
   const navigate = useNavigate();
 
-  const itemLink = `/product/id=${item._id}`;
+  const itemLink = `/product/${item._id}`;
 
   const onItemClick = () => navigate(itemLink);
 
@@ -43,7 +43,9 @@ function ProductItem({ item }) {
         <Typography variant="h5">${item.price}</Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={onItemClick}>Shop now</Button>
+        <Button onClick={onItemClick} fullWidth size="large">
+          Shop now
+        </Button>
       </CardActions>
     </Card>
   );
